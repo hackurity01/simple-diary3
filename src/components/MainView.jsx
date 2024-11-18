@@ -3,12 +3,15 @@ import "./MainView.css";
 import { useEffect, useState } from "react";
 
 function MainView({ setView }) {
-  const [questions, setQuestions] = useState();
   const now = new Date();
-
   const date = now.getDate();
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
+
+  const answers = JSON.parse(localStorage.getItem("diary") || "{}");
+
+  const [questions, setQuestions] = useState();
+  const [input, setInput] = useState(answers[date]);
 
   useEffect(() => {
     fetch(
@@ -44,8 +47,14 @@ function MainView({ setView }) {
       <div className="question">{questions[date]}</div>
       <div className="content">
         <textarea
-          onChange={() => {
-            console.log("onChange");
+          value={input}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInput(value);
+            localStorage.setItem(
+              "diary",
+              JSON.stringify({ ...answers, [date]: value })
+            );
           }}
         />
       </div>
