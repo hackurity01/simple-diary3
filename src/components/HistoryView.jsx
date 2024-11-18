@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import "./HistoryView.css";
 
-function HistoryView() {
+function HistoryView({ setView }) {
   return (
     <>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -8,6 +9,7 @@ function HistoryView() {
           className="back-btn"
           onClick={() => {
             // MainView 화면으로 전환
+            setView("main");
           }}>
           &lt;
         </button>
@@ -20,4 +22,9 @@ function HistoryView() {
     </>
   );
 }
+
+HistoryView.propTypes = {
+  setView: PropTypes.func,
+};
+
 export default HistoryView;
