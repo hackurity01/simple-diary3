@@ -1,11 +1,35 @@
 import PropTypes from "prop-types";
 import "./MainView.css";
+import { useEffect, useState } from "react";
 
 function MainView({ setView }) {
+  const [questions, setQuestions] = useState();
+  const now = new Date();
+
+  const date = now.getDate();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/hackurity01/simple-diary/main/src/questions.json"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setQuestions(data);
+      });
+  }, []);
+
+  if (!questions) {
+    return null;
+  }
+
   return (
     <>
       <div className="header">
-        <div>(오늘 날짜)</div>
+        <div>
+          {year}년 {month}월 {date}일
+        </div>
         <div>
           <button
             className="history-btn"
@@ -17,7 +41,7 @@ function MainView({ setView }) {
           </button>
         </div>
       </div>
-      <div className="question">(질문)</div>
+      <div className="question">{questions[date]}</div>
       <div className="content">
         <textarea
           onChange={() => {
